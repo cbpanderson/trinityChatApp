@@ -5,6 +5,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+app.use('/public', express.static('public'));
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -13,7 +15,11 @@ io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
-      });
+    });
+    //trying to implement connect and disconnect messages
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+    });
   });
 
 
