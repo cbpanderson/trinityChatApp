@@ -12,16 +12,19 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    var connectMsg = 'a user connected';
+    io.emit('connect message', connectMsg);
+    
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
     });
-    //trying to implement connect and disconnect messages
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+    
+    socket.on('disconnect', () => {
+        var msg = 'a user disconnected';
+        io.emit('disconnect message', msg);
     });
+    
   });
-
 
 server.listen(3000, () => {
     console.log('listening on *:3000');
